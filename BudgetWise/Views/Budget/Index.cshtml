@@ -1,0 +1,103 @@
+@model IEnumerable<Expense>
+@using System.Globalization
+@{
+    ViewData["Title"] = "Dashboard";
+    var categories = ViewBag.Categories as List<Category> ?? new List<Category>();
+    var month = (int)ViewBag.Month;
+    var year = (int)ViewBag.Year;
+    var income = (decimal)ViewBag.Income;
+    var total = (decimal)ViewBag.TotalExpenses;
+    var balance = (decimal)ViewBag.Balance;
+}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div>
+        <h1 class="page-title mb-1">Monthly overview</h1>
+        <p class="text-muted mb-0">Keep track of your income and spending.</p>
+    </div>
+    <a asp-action="Create" class="btn btn-primary">+ Add expense</a>
+</div>
+
+<form method="get" asp-action="Index" class="filter-panel row g-3 align-items-end mb-4">
+    <div class="col-6 col-md-3">
+        <label class="form-label" for="month">Month</label>
+        <select id="month" name="month" class="form-select">
+            @for (var m = 1; m <= 12; m++)
+            {
+                <option value="@m" selected="@(m == month)">@CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(m)</option>
+            }
+        </select>
+    </div>
+    <div class="col-6 col-md-3">
+        <label class="form-label" for="year">Year</label>
+        <input id="year" name="year" type="number" class="form-control" min="2000" max="2100" value="@year" />
+    </div>
+    <div class="col-12 col-md-4">
+        <label class="form-label" for="categoryId">Category</label>
+        <select id="categoryId" name="categoryId" class="form-select">
+            <option value="">All categories</option>
+            @foreach (var category in categories)
+            {
+                <option value="@category.CategoryId" selected="@(ViewBag.CategoryId != null && (int)ViewBag.CategoryId == category.CategoryId)">@category.Name</option>
+            }
+        </select>
+    </div>
+    <div class="col-12 col-md-2 d-grid"><button class="btn btn-outline-primary" type="submit">Apply filters</button></div>
+</form>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-md-4">
+        <section class="summary-card income-card h-100">
+            <div class="summary-label">Monthly income</div>
+            <div class="summary-value">@income.ToString("C", CultureInfo.GetCultureInfo("en-IN"))</div>
+            <a asp-action="SetIncome" asp-route-month="@month" asp-route-year="@year">Set or update income</a>
+        </section>
+    </div>
+    <div class="col-12 col-md-4">
+        <section class="summary-card expense-card h-100">
+            <div class="summary-label">Total expenses</div>
+            <div class="summary-value">@total.ToString("C", CultureInfo.GetCultureInfo("en-IN"))</div>
+            <span class="summary-note">For the selected month and filters</span>
+        </section>
+    </div>
+    <div class="col-12 col-md-4">
+        <section class="summary-card balance-card h-100">
+            <div class="summary-label">Remaining balance</div>
+            <div class="summary-value">@balance.ToString("C", CultureInfo.GetCultureInfo("en-IN"))</div>
+            <span class="summary-note">Income minus expenses shown</span>
+        </section>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="section-title mb-0">Expenses</h2>
+    <span class="badge text-bg-light">@Model.Count() records</span>
+</div>
+<div class="table-responsive card table-card">
+    <table class="table align-middle mb-0">
+        <thead><tr><th>Date</th><th>Expense</th><th>Category</th><th class="text-end">Amount</th><th class="text-end">Actions</th></tr></thead>
+        <tbody>
+        @if (!Model.Any())
+        {
+            <tr><td colspan="5" class="text-center py-5 text-muted">No expenses found. Add an expense to get started.</td></tr>
+        }
+        else
+        {
+            @foreach (var expense in Model)
+            {
+                <tr>
+                    <td class="text-nowrap">@expense.Date.ToString("dd MMM yyyy")</td>
+                    <td><div class="fw-semibold">@expense.Title</div>@if (!string.IsNullOrWhiteSpace(expense.Description)) { <div class="small text-muted">@expense.Description</div> }</td>
+                    <td><span class="category-pill">@expense.Category?.Name</span></td>
+                    <td class="text-end fw-semibold text-nowrap">@expense.Amount.ToString("C", CultureInfo.GetCultureInfo("en-IN"))</td>
+                    <td class="text-end text-nowrap">
+                        <a asp-action="Edit" asp-route-id="@expense.ExpenseId" class="btn btn-sm btn-outline-secondary">Edit</a>
+                        <form asp-action="Delete" asp-route-id="@expense.ExpenseId" method="post" class="d-inline" onsubmit="return confirm('Delete this expense?');">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        }
+        </tbody>
+    </table>
+</div>

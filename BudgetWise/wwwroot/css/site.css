@@ -1,0 +1,53 @@
+body {
+    background: #f5f7fb;
+    color: #202938;
+    min-height: 100vh;
+}
+.app-navbar { background: #213448; }
+.navbar-brand { letter-spacing: .2px; }
+.page-title { font-size: clamp(1.7rem, 3vw, 2.25rem); font-weight: 750; letter-spacing: -.04em; }
+.section-title { font-size: 1.2rem; font-weight: 700; }
+.filter-panel, .form-card, .table-card {
+    background: #fff;
+    border: 1px solid #e5eaf1;
+    border-radius: 16px;
+    padding: 1.2rem;
+    box-shadow: 0 5px 20px rgba(27, 42, 62, .035);
+}
+.table-card { padding: 0; overflow: hidden; }
+.table thead th {
+    background: #f8fafc;
+    color: #637083;
+    font-size: .78rem;
+    text-transform: uppercase;
+    letter-spacing: .045em;
+    padding: .95rem 1rem;
+    white-space: nowrap;
+}
+.table tbody td { padding: 1rem; }
+.summary-card {
+    padding: 1.35rem;
+    border: 1px solid #e4eaf1;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(27, 42, 62, .035);
+}
+.summary-label { color: #687588; font-size: .9rem; font-weight: 600; }
+.summary-value { font-size: clamp(1.55rem, 3vw, 2rem); font-weight: 750; letter-spacing: -.04em; margin: .45rem 0; overflow-wrap: anywhere; }
+.summary-note, .summary-card a { font-size: .82rem; color: #687588; }
+.summary-card a { color: #315b85; text-decoration: none; font-weight: 600; }
+.income-card { border-top: 4px solid #547792; }
+.expense-card { border-top: 4px solid #d98b66; }
+.balance-card { border-top: 4px solid #4f9a7b; }
+.category-pill { display: inline-block; border-radius: 100px; background: #eef3f8; color: #36516b; padding: .3rem .65rem; font-size: .82rem; }
+.form-label { font-weight: 600; font-size: .92rem; }
+.form-control, .form-select, .input-group-text { min-height: 44px; border-color: #dce3ec; }
+.btn { border-radius: 9px; }
+.btn-primary { background: #213f5a; border-color: #213f5a; }
+.btn-primary:hover { background: #172f45; border-color: #172f45; }
+footer { background: #fff; }
+@media (max-width: 576px) {
+    main.container { padding-top: 1.25rem !important; }
+    .filter-panel, .form-card { padding: 1rem; }
+    .table tbody td { padding: .8rem .65rem; }
+}

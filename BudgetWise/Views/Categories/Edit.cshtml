@@ -1,0 +1,14 @@
+@model Category
+@{
+    ViewData["Title"] = "Rename Category";
+}
+<h1 class="page-title mb-1">Rename category</h1><p class="text-muted mb-4">Existing expenses will use the updated name.</p>
+<div class="form-card">
+<form asp-action="Edit" asp-route-id="@Model.CategoryId" method="post">
+    <input type="hidden" asp-for="CategoryId" />
+    <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+    <div class="mb-4"><label asp-for="Name" class="form-label"></label><input asp-for="Name" class="form-control" /><span asp-validation-for="Name" class="text-danger"></span></div>
+    <button class="btn btn-primary" type="submit">Save changes</button> <a asp-action="Index" class="btn btn-light">Cancel</a>
+</form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }

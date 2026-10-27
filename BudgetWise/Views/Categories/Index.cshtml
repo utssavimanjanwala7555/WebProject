@@ -1,0 +1,27 @@
+@model IEnumerable<Category>
+@{
+    ViewData["Title"] = "Categories";
+}
+<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+    <div><h1 class="page-title mb-1">Expense categories</h1><p class="text-muted mb-0">Create categories that match your spending.</p></div>
+    <a asp-action="Create" class="btn btn-primary">+ Add category</a>
+</div>
+<div class="table-responsive card table-card">
+<table class="table align-middle mb-0">
+    <thead><tr><th>Category</th><th>Expenses linked</th><th class="text-end">Actions</th></tr></thead>
+    <tbody>
+    @if (!Model.Any()) { <tr><td colspan="3" class="text-center py-5 text-muted">No categories yet. Create your first category.</td></tr> }
+    else { @foreach (var category in Model) {
+        <tr>
+            <td class="fw-semibold">@category.Name</td>
+            <td>@category.Expenses.Count</td>
+            <td class="text-end text-nowrap">
+                <a asp-action="Edit" asp-route-id="@category.CategoryId" class="btn btn-sm btn-outline-secondary">Rename</a>
+                <form asp-action="Delete" asp-route-id="@category.CategoryId" method="post" class="d-inline" onsubmit="return confirm('Delete this category?');"><button type="submit" class="btn btn-sm btn-outline-danger">Delete</button></form>
+            </td>
+        </tr>
+    } }
+    </tbody>
+</table>
+</div>
+<p class="small text-muted mt-3">A category cannot be deleted while expenses still use it. This protects your expense records.</p>
